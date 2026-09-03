@@ -1,0 +1,84 @@
+/* ------------------------------------------------------------------
+   Refract design tokens.
+
+   The whole page is monochrome on near-black. Colour is not a token here
+   on purpose: the only colour on the site comes from chromatic dispersion
+   through the glass object, so adding a brand hue would fight the one
+   idea the design is built on.
+   ------------------------------------------------------------------ */
+
+:root {
+  --ground: #0a0a0c;
+  --ink: #e8e8ea;
+  --ink-dim: #9a9aa2;
+  --ink-faint: #5a5a63;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --panel: rgba(255, 255, 255, 0.03);
+
+  /* Type scale. The drama is the ratio: display is enormous, labels stay
+     tiny, and nothing sits in between. */
+  --step-hero: clamp(3.25rem, 11.5vw, 11rem);
+  --step-beat: clamp(2.25rem, 7vw, 5.75rem);
+  --step-closing: clamp(3rem, 10vw, 9rem);
+  --step-body: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  --step-label: 0.75rem;
+
+  --space-section: clamp(7rem, 20vh, 14rem);
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --measure: 34ch;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--ground);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--step-body);
+  line-height: 1.5;
+  font-variation-settings: "wght" 400;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 0.92;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+
+a { color: inherit; }
+
+:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* Eyebrow / section number. Small caps at wide tracking is the counterweight
+   to the display sizes; without it the page reads as only "big". */
+.label {
+  font-size: var(--step-label);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-variation-settings: "wght" 500;
+}
+
+.measure { max-width: var(--measure); }
+
+/* Every headline line is wrapped so its characters can rise out from behind a
+   mask. The mask has to exist in the static design too, or enabling motion
+   would shift the layout. */
+.line-mask { overflow: hidden; display: block; }

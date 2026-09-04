@@ -8,12 +8,18 @@ const R = 17;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 
 /**
- * A ring that trails the pointer, with an arc that fills as you move.
+ * A ring that trails the pointer, with an arc showing how far down the page you are.
  *
  * On a page about refraction a circle you drag across the type reads as a lens, which
  * is why the shape earns its place rather than being an ornament borrowed from another
- * site. The arc is what makes it feel alive: it charges with the distance travelled and
- * cycles, so moving across the screen visibly loads it and standing still leaves it be.
+ * site. The arc reports scroll position, so it is a reading dial carried around under
+ * the hand rather than decoration: empty at the top, full at the footer, and it runs
+ * backwards when you scroll back up.
+ *
+ * Position is read straight from the document each frame rather than from a scroll
+ * event or from the 3D scene's own progress value. That keeps it correct while Lenis
+ * is easing between positions, and keeps it working on the poster path where there is
+ * no WebGL scene running at all.
  *
  * The native cursor is deliberately left alone. Hiding it is the fashion, but it costs
  * a visitor the one thing they rely on to know where they are pointing, and on a page
@@ -40,15 +46,9 @@ export function CursorLens() {
     let targetScale = 1;
     let visible = 0;
     let targetVisible = 0;
-    let charge = 0;
     let raf = 0;
 
     const onMove = (e: PointerEvent) => {
-      // Distance travelled is what fills the arc, so a slow deliberate move loads it
-      // gradually and a flick across the page snaps it round.
-      const dx = e.clientX - pointer.x;
-      const dy = e.clientY - pointer.y;
-      if (pointer.x > -100) charge += Math.hypot(dx, dy) / 1400;
       pointer.x = e.clientX;
       pointer.y = e.clientY;
       targetVisible = 1;
@@ -69,10 +69,12 @@ export function CursorLens() {
       el.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0) translate(-50%, -50%) scale(${scale.toFixed(3)})`;
       el.style.opacity = visible.toFixed(3);
 
-      // Wraps rather than clamping, so the arc keeps cycling for as long as the
-      // pointer keeps moving instead of filling once and dying.
-      const p = charge % 1;
-      arc.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - p));
+      // How far through the document we are. The guard matters: a page shorter than
+      // the viewport has nothing to scroll, and dividing by zero would leave the dial
+      // stuck at NaN and blank.
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      arc.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - progress));
 
       raf = requestAnimationFrame(tick);
     };

@@ -23,7 +23,7 @@ export function Footer() {
       </p>
 
       <div className="footer__hand">
-        <h2 className="footer__name">{footer.name}</h2>
+        <h2 className="footer__name" data-disperse>{footer.name}</h2>
         <p className="footer__role measure">{footer.role}</p>
         <div className="footer__links">
           <a className="footer__link" href={footer.contactHref}>

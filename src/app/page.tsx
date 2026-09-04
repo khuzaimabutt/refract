@@ -1,5 +1,6 @@
 import { Grain } from "@/components/Grain";
 import { Shell } from "@/components/Shell";
+import { Disperse } from "@/components/Disperse";
 import { SceneRoot } from "@/components/scene/SceneRoot";
 import { Hero } from "@/components/Hero";
 import { Beat } from "@/components/beats/Beat";
@@ -13,6 +14,7 @@ export default function Home() {
     <Shell>
       <SceneRoot />
       <Grain />
+      <Disperse>
       <main className="page">
         <Hero />
         {copy.beats.map((beat, i) => (
@@ -22,6 +24,7 @@ export default function Home() {
         <Closing />
         <Footer />
       </main>
+      </Disperse>
     </Shell>
   );
 }

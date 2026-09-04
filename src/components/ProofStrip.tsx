@@ -9,7 +9,7 @@ export function ProofStrip() {
         <div className="proof__stats">
         {copy.proof.stats.map((s) => (
           <div className="proof__stat" key={s.label}>
-            <span className="proof__value" data-value={s.value} data-suffix={s.suffix}>
+            <span className="proof__value" data-value={s.value} data-suffix={s.suffix} data-disperse>
               {s.value}
               {s.suffix}
             </span>

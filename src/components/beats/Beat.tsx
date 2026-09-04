@@ -17,10 +17,10 @@ export function Beat({ beat, side }: { beat: BeatCopy; side: "left" | "right" })
           <p className="stage-note" data-reveal="supporting">
             {beat.stageNote}
           </p>
-          <h2 className="beat__headline" data-reveal="headline">
+          <h2 className="beat__headline" data-reveal="headline" data-disperse>
             {beat.headline}
           </h2>
-          <p className="beat__body measure" data-reveal="supporting">
+          <p className="beat__body measure" data-reveal="supporting" data-disperse>
             {beat.body}
           </p>
         </div>

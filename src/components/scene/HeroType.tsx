@@ -17,6 +17,18 @@ import { useThree } from "@react-three/fiber";
  */
 export function HeroType() {
   const { viewport } = useThree();
+
+  /**
+   * The poster capture asks for the scene without its type.
+   *
+   * The still fallback is object-fit: cover, so on a narrow phone a landscape image
+   * with words baked into it would crop them in half, and the document already shows
+   * a real headline in that mode. So the poster carries the crystal and its light and
+   * nothing else, and stays correct at any aspect ratio.
+   */
+  if (typeof window !== "undefined" && window.location.search.includes("poster")) {
+    return null;
+  }
   // Track the viewport in world units so the type scales with the frame the way a CSS
   // vw-based headline does, instead of drifting off the sides on a wide monitor.
   const size = Math.min(viewport.width * 0.115, 1.35);

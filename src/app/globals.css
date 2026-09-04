@@ -291,29 +291,84 @@ a { color: inherit; }
 
 .closing__headline { font-size: var(--step-closing); font-variation-settings: "wght" 580; }
 
-/* --- footer ------------------------------------------------------- */
+/* --- footer -------------------------------------------------------
+   The only part of the page that speaks as a person rather than as a
+   product, so it is given room and a size to match.
+   ------------------------------------------------------------------ */
 
 .footer {
-  padding: clamp(3rem, 8vw, 6rem) var(--gutter) clamp(2rem, 5vw, 3.5rem);
+  position: relative;
+  padding: clamp(5rem, 14vh, 9rem) var(--gutter) clamp(2.5rem, 6vh, 4rem);
   border-top: 1px solid var(--hairline);
   display: grid;
-  gap: 1.5rem;
+  gap: clamp(3rem, 8vh, 5.5rem);
 }
 
-.footer__disclosure { color: var(--ink-dim); max-width: 46ch; }
+/* Names the fiction before making any claim, which is what earns the claim. */
+.footer__disclosure {
+  font-size: var(--step-small);
+  color: var(--ink-faint);
+  font-style: italic;
+}
 
-.footer__meta {
+.footer__turn { color: var(--ink-dim); }
+
+.footer__hand {
+  display: grid;
+  gap: clamp(1rem, 2.5vh, 1.5rem);
+  justify-items: start;
+}
+
+/* Set as a signature, not a credit line. */
+.footer__name {
+  font-size: clamp(2.5rem, min(8vw, 14vh), 6rem);
+  font-variation-settings: "wght" 560;
+  letter-spacing: -0.03em;
+}
+
+.footer__role { color: var(--ink-dim); }
+
+.footer__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem 2rem;
-  justify-content: space-between;
+  gap: clamp(1.25rem, 4vw, 2.5rem);
+  margin-top: clamp(0.5rem, 1.5vh, 1rem);
+}
+
+.footer__link {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  text-decoration: none;
+  padding-bottom: 0.4em;
+  position: relative;
+}
+
+.footer__link::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--ink-faint);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-out), background-color 0.6s var(--ease-out);
+}
+
+.footer__link:hover::after { background: var(--ink); transform: scaleX(0.4); }
+
+/* Typefaces, stack and measured figures. For the people this page is aimed at,
+   this is the most persuasive content on it, so it gets a real row rather than
+   a line of small print. */
+.colophon {
+  list-style: none;
+  margin: 0;
+  padding: clamp(1.5rem, 4vh, 2.5rem) 0 0;
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  gap: 0.75rem clamp(1.5rem, 4vw, 3rem);
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   font-size: var(--step-small);
   color: var(--ink-faint);
 }
-
-.footer__links { display: flex; gap: 1.5rem; }
-.footer__links a { text-decoration: none; border-bottom: 1px solid var(--hairline); padding-bottom: 2px; }
-.footer__links a:hover { border-bottom-color: var(--ink-dim); }
 
 /* --- preloader ---------------------------------------------------- */
 

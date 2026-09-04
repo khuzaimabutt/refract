@@ -23,7 +23,11 @@ const KEYS: [number, number, number, number, number, number][] = [
   [0.44, 6.3, 0.15, -1.7, 0.0, 0.68],
   [0.66, 5.8, 0.1, 1.6, 0.0, 0.62],
   [0.84, 6.6, 0.0, 0.0, 0.0, 0.4],
-  [1.0, 7.6, 0.0, 0.0, 0.0, 0.85],
+  // The closing headline is centred, so the crystal returns to the middle behind it.
+  [0.93, 7.6, 0.0, 0.0, 0.0, 0.85],
+  // The footer is left-aligned and signed with a name set large. The crystal moves
+  // right and lifts out of its way rather than sitting behind the last few letters.
+  [1.0, 8.2, 0.25, 1.85, 0.15, 0.6],
 ];
 
 function sample(p: number): [number, number, number, number, number] {

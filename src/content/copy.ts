@@ -29,7 +29,17 @@ export type SiteCopy = {
   beats: [BeatCopy, BeatCopy, BeatCopy];
   proof: { stats: { value: number; suffix: string; label: string }[]; line: string };
   closing: { headline: string; cta: string };
-  footer: { disclosure: string; credit: string; contactHref: string; githubHref: string };
+  footer: {
+    disclosure: string;
+    turn: string;
+    name: string;
+    role: string;
+    contactHref: string;
+    contactLabel: string;
+    githubHref: string;
+    /** Typefaces, stack and measured figures. Every number here is one we recorded. */
+    colophon: string[];
+  };
 };
 
 export const copy: SiteCopy = {
@@ -96,9 +106,18 @@ export const copy: SiteCopy = {
   },
   closing: { headline: "Start seeing.", cta: "Request access" },
   footer: {
-    disclosure: "Refract is a fictional product, designed and built as a portfolio demonstration.",
-    credit: "Designed and built by Khuzaima Atiq.",
+    disclosure: "Refract is a fictional product.",
+    turn: "The engineering is not.",
+    name: "Khuzaima Atiq",
+    role: "Creative developer. Available for studio and agency work.",
     contactHref: "mailto:ikrma434@gmail.com",
+    contactLabel: "ikrma434@gmail.com",
     githubHref: "https://github.com/khuzaimabutt",
+    colophon: [
+      "Set in Clash Display and Erode",
+      "Next.js, React Three Fiber, GSAP, Lenis",
+      "688ms to first paint on throttled 4G",
+      "60fps on integrated graphics",
+    ],
   },
 };

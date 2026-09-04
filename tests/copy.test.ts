@@ -21,7 +21,16 @@ test("three beats, each with a lowercase stage note, short headline, populated c
 
 test("footer discloses the fiction and credits the author", () => {
   assert.match(copy.footer.disclosure, /fictional/i);
-  assert.match(copy.footer.credit, /Khuzaima/);
+  assert.match(copy.footer.name, /Khuzaima/);
+});
+
+test("the colophon quotes figures we actually measured", () => {
+  const text = copy.footer.colophon.join(" ");
+  // These come from docs/perf/2026-09-04-baseline.md. If the numbers change there,
+  // they have to change here, because a portfolio that overstates its own metrics
+  // is worse than one that quotes none.
+  assert.match(text, /688ms/);
+  assert.match(text, /60fps/);
 });
 
 test("proof strip flags its own numbers as illustrative", () => {

@@ -43,4 +43,3 @@ next-env.d.ts
 # screenshot working directory
 /.shots
 
-.vercel

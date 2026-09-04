@@ -71,7 +71,7 @@ export function GlassObject({
           <MeshTransmissionMaterial
             transmission={1}
             thickness={0.75}
-            roughness={0.02}
+            roughness={0.09}
             ior={1.42}
             chromaticAberration={low ? 0.16 : 0.3}
             anisotropicBlur={0.35}
@@ -80,8 +80,8 @@ export function GlassObject({
             temporalDistortion={low ? 0 : 0.08}
             samples={low ? 4 : 8}
             resolution={low ? 512 : 1024}
-            backside={!low}
-            backsideThickness={0.35}
+            backside={false}
+
           />
         </mesh>
       </group>

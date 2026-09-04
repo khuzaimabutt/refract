@@ -27,8 +27,13 @@ export function SceneContents({
   return (
     <>
       {/* The environment does more than the lights here. Transmissive glass shows its
-          surroundings, so with nothing around it the material reads as grey jelly. */}
-      <Environment preset="studio" environmentIntensity={1.15} />
+          surroundings, so with nothing around it the material reads as grey jelly.
+
+          Not "studio": that preset is built from hard rectangular softboxes, and on
+          twenty flat facets with almost no roughness each panel came back as a sharp
+          white polygon sitting inside the crystal. "city" is broken up and directional
+          without a single dominant bright rectangle to mirror. */}
+      <Environment preset="city" environmentIntensity={1.05} />
       <directionalLight position={[4, 3, -6]} intensity={2.2} />
       <directionalLight position={[-5, -2, -4]} intensity={1.4} />
 

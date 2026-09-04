@@ -110,8 +110,8 @@ export const copy: SiteCopy = {
     turn: "The engineering is not.",
     name: "Khuzaima Atiq",
     role: "Creative developer. Open to studio, agency and direct work.",
-    contactHref: "mailto:ikrma434@gmail.com",
-    contactLabel: "ikrma434@gmail.com",
+    contactHref: "mailto:khuzaimaup@gmail.com",
+    contactLabel: "khuzaimaup@gmail.com",
     githubHref: "https://github.com/khuzaimabutt",
     colophon: [
       "Set in Clash Display and Erode",

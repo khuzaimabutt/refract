@@ -17,6 +17,9 @@ import { scrollProgress } from "./scroll-progress";
  * The DOM keeps a visually hidden copy of the same words, so the page still has one
  * real <h1> for search engines, screen readers and text selection.
  */
+/** The headline, one entry per line, so sizing can measure the longest of them. */
+const LINES = ["See through", "your agents."];
+
 export function HeroType() {
   const { viewport } = useThree();
   const ref = useRef<Mesh>(null);
@@ -50,9 +53,25 @@ export function HeroType() {
     return null;
   }
 
-  // Tracked in world units so the type scales with the frame the way a vw-based
-  // headline does, instead of drifting off the sides on a wide monitor.
-  const size = Math.min(viewport.width * 0.115, 1.35);
+  /**
+   * Sized against the whole frame, not just its width.
+   *
+   * Width alone was wrong in two directions at once. On a short, wide window the
+   * headline grew tall enough to sit on the paragraph beneath it, and on a small
+   * window the longest line ran off the right edge. Height is the constraint that
+   * was missing: the type has to fit the space between the wordmark and the foot,
+   * not just the space across.
+   *
+   * The width term is divided by the longest line rather than guessed at, so the
+   * limit follows the copy instead of a number that happens to suit today's
+   * headline.
+   */
+  const longest = Math.max(...LINES.map((l) => l.length));
+  const size = Math.min(
+    (viewport.width * 0.92) / (longest * 0.52),
+    viewport.height * 0.19,
+    1.35,
+  );
 
   return (
     <group position={[0, 0, -1.6]}>

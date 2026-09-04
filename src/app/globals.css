@@ -23,9 +23,11 @@
 
   /* The ratio is the drama: display is enormous, prose stays quiet, and
      nothing sits in the middle competing with either. */
-  --step-hero: clamp(3.25rem, 11.5vw, 11rem);
-  --step-beat: clamp(2.25rem, 7vw, 5.75rem);
-  --step-closing: clamp(3rem, 10vw, 9rem);
+  /* Sized against both axes. Width alone made the headline tall enough on a short,
+     wide window to sit on the paragraph below it. */
+  --step-hero: clamp(2.5rem, min(11.5vw, 19vh), 11rem);
+  --step-beat: clamp(2rem, min(7vw, 13vh), 5.75rem);
+  --step-closing: clamp(2.5rem, min(10vw, 17vh), 9rem);
   --step-prose: clamp(1rem, 1.15vw, 1.1875rem);
   --step-small: 0.8125rem;
 
@@ -146,6 +148,9 @@ a { color: inherit; }
   grid-template-columns: 1fr auto;
   align-items: end;
   gap: clamp(1.5rem, 4vw, 3rem);
+  /* Keeps the paragraph clear of the headline above it on a short window, where the
+     centred headline grows toward the foot rather than away from it. */
+  padding-top: clamp(1.5rem, 6vh, 4rem);
 }
 
 .hero__aside { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); justify-items: start; }

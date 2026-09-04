@@ -330,7 +330,13 @@ a { color: inherit; }
 /* --- 3D stage and its still fallback ------------------------------ */
 
 /* The poster stands in for the canvas when motion is off or WebGL is missing.
-   Same object, same place, so the composition never changes shape. */
+   Same object, same place, so the composition never changes shape.
+
+   It sits on its own painted ground rather than on whatever the image happens to
+   contain. An earlier build shipped a poster that was accidentally a screenshot of
+   a white error page, and because the image covers the viewport it turned the whole
+   fallback into pale text on white. A wrong or missing poster should cost the
+   decoration, never the readability. */
 .scene-poster {
   position: fixed;
   inset: 0;
@@ -339,6 +345,7 @@ a { color: inherit; }
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  background: var(--ground);
 }
 
 /* Visible to assistive technology and to search, not to the eye. Used for the

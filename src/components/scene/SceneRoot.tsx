@@ -52,7 +52,7 @@ export function SceneRoot() {
   if (mode === "poster") {
     return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img className="scene-poster" src="/poster.png" alt="" aria-hidden />
+      <img className="scene-poster" src="/poster.jpg" alt="" aria-hidden />
     );
   }
   if (mode === "pending") return null;

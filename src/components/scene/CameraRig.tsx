@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Group } from "three";
+import { scrollProgress } from "./scroll-progress";
 
 /**
  * Scroll position, expressed as where the object should be and how close the camera is.
@@ -51,7 +52,6 @@ function sample(p: number): [number, number, number, number, number] {
 
 export function CameraRig({ objectRef }: { objectRef: React.RefObject<Group | null> }) {
   const { camera } = useThree();
-  const progress = useRef(0);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -63,14 +63,14 @@ export function CameraRig({ objectRef }: { objectRef: React.RefObject<Group | nu
       // Written to a ref, never to React state. Setting state on every scroll frame
       // would re-render the whole tree sixty times a second.
       onUpdate: (self) => {
-        progress.current = self.progress;
+        scrollProgress.value = self.progress;
       },
     });
     return () => st.kill();
   }, []);
 
   useFrame((_, delta) => {
-    const [cz, cy, ox, oy, scale] = sample(progress.current);
+    const [cz, cy, ox, oy, scale] = sample(scrollProgress.value);
     const dt = Math.min(delta, 0.05);
     // Lerped rather than assigned, so the travel keeps a little inertia and never
     // steps when the scroll position jumps.

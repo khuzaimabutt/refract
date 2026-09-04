@@ -1,31 +1,42 @@
 /* ------------------------------------------------------------------
    Refract design tokens.
 
-   The whole page is monochrome on near-black. Colour is not a token here
-   on purpose: the only colour on the site comes from chromatic dispersion
-   through the glass object, so adding a brand hue would fight the one
-   idea the design is built on.
+   Colour comes from the subject rather than from a dark-mode default.
+   The ground is the green-black you see looking into the cut edge of a
+   thick float-glass pane, which is iron in the glass, not a tint anyone
+   chose. Hairlines carry the same faint cyan cast, as though lit through
+   the same material.
+
+   There is deliberately no accent colour. The only colour on this page
+   arrives as chromatic dispersion through the glass object, so a brand
+   hue would compete with the one idea the design is built on.
    ------------------------------------------------------------------ */
 
 :root {
-  --ground: #0a0a0c;
-  --ink: #e8e8ea;
-  --ink-dim: #9a9aa2;
-  --ink-faint: #5a5a63;
-  --hairline: rgba(255, 255, 255, 0.08);
-  --panel: rgba(255, 255, 255, 0.03);
+  --ground: #04090b;
+  --ground-lift: #070f11;
+  --ink: #e6ece9;
+  --ink-dim: #8c9a97;
+  --ink-faint: #4a5754;
+  --hairline: rgba(198, 255, 244, 0.09);
+  --panel: rgba(180, 230, 225, 0.035);
 
-  /* Type scale. The drama is the ratio: display is enormous, labels stay
-     tiny, and nothing sits in between. */
+  /* The ratio is the drama: display is enormous, prose stays quiet, and
+     nothing sits in the middle competing with either. */
   --step-hero: clamp(3.25rem, 11.5vw, 11rem);
   --step-beat: clamp(2.25rem, 7vw, 5.75rem);
   --step-closing: clamp(3rem, 10vw, 9rem);
-  --step-body: clamp(0.9375rem, 1.05vw, 1.0625rem);
-  --step-label: 0.75rem;
+  --step-prose: clamp(1rem, 1.15vw, 1.1875rem);
+  --step-small: 0.8125rem;
 
   --space-section: clamp(7rem, 20vh, 14rem);
   --gutter: clamp(1.25rem, 5vw, 5rem);
-  --measure: 34ch;
+  --measure: 44ch;
+
+  /* Refraction displaces light sideways as it enters a denser medium.
+     The layout borrows that: blocks sit off their expected axis, and the
+     offset flips as the object crosses the page. */
+  --shift: clamp(0rem, 6vw, 5.5rem);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -36,49 +47,265 @@ html {
   background: var(--ground);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  font-size: var(--step-body);
-  line-height: 1.5;
-  font-variation-settings: "wght" 400;
+  font-family: var(--font-prose), Georgia, serif;
+  font-size: var(--step-prose);
+  line-height: 1.62;
   overflow-x: hidden;
 }
 
-h1, h2, h3 {
-  font-family: var(--font-display), var(--font-body), ui-sans-serif, sans-serif;
+h1, h2 {
+  font-family: var(--font-display), ui-sans-serif, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 0.92;
+  letter-spacing: -0.028em;
+  line-height: 0.9;
   margin: 0;
   text-wrap: balance;
 }
 
 p { margin: 0; }
-
 a { color: inherit; }
 
 :focus-visible {
   outline: 1px solid var(--ink);
-  outline-offset: 4px;
+  outline-offset: 5px;
 }
 
-/* Eyebrow / section number. Small caps at wide tracking is the counterweight
-   to the display sizes; without it the page reads as only "big". */
-.label {
-  font-size: var(--step-label);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+/* Says where in an agent's run you are. This is a real sequence in the
+   product, so it earns a marker; it is set in prose case because it is a
+   sentence fragment, not a category tag. */
+.stage-note {
+  font-size: var(--step-small);
+  font-style: italic;
   color: var(--ink-dim);
-  font-variation-settings: "wght" 500;
+  letter-spacing: 0.01em;
+}
+
+/* Verbatim machine output only: run ids, counts, filenames. Never a human
+   label, where a monospace face would be costume rather than function. */
+.machine {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
 
 .measure { max-width: var(--measure); }
 
-/* Every headline line is wrapped so its characters can rise out from behind a
-   mask. The mask has to exist in the static design too, or enabling motion
-   would shift the layout. */
-.line-mask { overflow: hidden; display: block; }
+/* Headline lines are masked so characters can rise from behind the edge
+   once motion is wired. The mask exists in the static design too, or
+   enabling motion would shift the layout under the reader.
+
+   The padding is not spacing: at a line-height of 0.9 the mask's edge cuts
+   through descenders, so the y in "your" loses its tail. The padding gives
+   the descender room and the equal negative margin gives the space back, so
+   the mask hides motion without cropping letterforms. */
+.line-mask {
+  overflow: hidden;
+  display: block;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+/* ==================================================================
+   Sections
+   ================================================================== */
+
+.page { position: relative; z-index: 1; }
+
+/* --- hero -------------------------------------------------------- */
+
+/* The headline sits on the optical centre line, not at the foot of the
+   screen, because the glass object floats there and the whole premise is
+   that it bends these words. Type parked safely below it would never be
+   refracted, and the page would lose the one idea it is built on. */
+.hero {
+  min-height: 100svh;
+  padding: var(--gutter);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+}
+
+.hero__mark { color: var(--ink-dim); letter-spacing: 0.2em; }
+
+.hero__headline {
+  align-self: center;
+  justify-self: start;
+  font-size: var(--step-hero);
+  font-variation-settings: "wght" 560;
+  max-width: 16ch;
+}
+
+.hero__foot {
+  align-self: end;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.hero__aside { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); justify-items: start; }
+
+.hero__sub { color: var(--ink-dim); }
+
+.hero__cue { font-size: var(--step-small); font-style: italic; color: var(--ink-faint); }
+
+/* --- call to action ---------------------------------------------- */
+
+.cta {
+  display: inline-block;
+  font-family: var(--font-display), sans-serif;
+  font-size: 1rem;
+  font-variation-settings: "wght" 500;
+  text-decoration: none;
+  color: var(--ink);
+  padding-bottom: 0.45em;
+  position: relative;
+}
+
+/* The rule draws itself from the left on hover, the one place a small
+   motion is worth spending, because it answers a person's action. */
+.cta::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.cta:hover::after { transform: scaleX(0.35); }
+
+.cta--lg { font-size: clamp(1.125rem, 1.6vw, 1.375rem); }
+
+/* --- beats -------------------------------------------------------
+   Two columns, text and plate. The order swaps per beat so the object
+   always has the far half to cross, and --shift pushes the text off
+   its expected axis in the direction the object just came from.
+   ------------------------------------------------------------------ */
+
+.beat {
+  min-height: 100svh;
+  padding: clamp(4rem, 10vh, 7rem) var(--gutter);
+  display: grid;
+  align-content: center;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+  .beat { grid-template-columns: 1fr 1fr; align-items: center; }
+  .beat--left .beat__text  { grid-column: 1; transform: translateX(var(--shift)); }
+  .beat--left .beat__card  { grid-column: 2; justify-self: end; }
+  .beat--right .beat__text { grid-column: 2; transform: translateX(calc(var(--shift) * -1)); }
+  .beat--right .beat__card { grid-column: 1; grid-row: 1; justify-self: start; }
+}
+
+.beat__text { display: grid; gap: clamp(1rem, 2vw, 1.5rem); justify-items: start; }
+.beat__headline { font-size: var(--step-beat); font-variation-settings: "wght" 550; }
+.beat__body { color: var(--ink-dim); }
+
+/* --- plate -------------------------------------------------------- */
+
+.card {
+  margin: 0;
+  width: min(28rem, 100%);
+  border: 1px solid var(--hairline);
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.card__head {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink-dim);
+}
+
+.card__rows { margin: 0; padding: 0.35rem 0; }
+
+.card__row {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, 7.5rem) 1fr;
+  gap: 1rem;
+  padding: 0.62rem 1.1rem;
+}
+
+.card__key { color: var(--ink-faint); font-size: var(--step-small); font-style: italic; }
+.card__val { margin: 0; color: var(--ink); }
+
+/* --- proof -------------------------------------------------------- */
+
+.proof {
+  padding: var(--space-section) var(--gutter);
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  justify-items: center;
+  text-align: center;
+}
+
+.proof__stats {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, auto));
+  justify-content: center;
+}
+
+.proof__stat { display: grid; gap: 0.6rem; }
+
+.proof__value {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
+  font-variation-settings: "wght" 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.proof__label { font-size: var(--step-small); color: var(--ink-dim); font-style: italic; }
+
+.proof__line { color: var(--ink-faint); font-size: var(--step-small); font-style: italic; }
+
+/* --- closing ------------------------------------------------------ */
+
+.closing {
+  min-height: 100svh;
+  padding: var(--space-section) var(--gutter);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.closing__headline { font-size: var(--step-closing); font-variation-settings: "wght" 580; }
+
+/* --- footer ------------------------------------------------------- */
+
+.footer {
+  padding: clamp(3rem, 8vw, 6rem) var(--gutter) clamp(2rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  gap: 1.5rem;
+}
+
+.footer__disclosure { color: var(--ink-dim); max-width: 46ch; }
+
+.footer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  justify-content: space-between;
+  font-size: var(--step-small);
+  color: var(--ink-faint);
+}
+
+.footer__links { display: flex; gap: 1.5rem; }
+.footer__links a { text-decoration: none; border-bottom: 1px solid var(--hairline); padding-bottom: 2px; }
+.footer__links a:hover { border-bottom-color: var(--ink-dim); }

@@ -8,8 +8,14 @@
  */
 
 export type BeatCopy = {
-  /** Section eyebrow, e.g. "01 Trace". The number is part of the visual system. */
-  label: string;
+  /**
+   * Where in an agent's run this capability applies. A real sequence in the product
+   * (during, during, after), which is why it earns a marker at all; it is phrased as a
+   * fragment rather than a category tag so it reads as information, not chrome.
+   */
+  stageNote: string;
+  /** The one-word product name for this capability. */
+  name: string;
   /** Display headline. Short on purpose: it is set at 7vw and has to survive one line. */
   headline: string;
   body: string;
@@ -35,7 +41,8 @@ export const copy: SiteCopy = {
   },
   beats: [
     {
-      label: "01 Trace",
+      stageNote: "while it runs",
+      name: "Trace",
       headline: "Every decision, lit.",
       body: "Follow an agent's reasoning as a readable timeline instead of a log dump. Each step shows what the model saw, what it chose, and what it cost.",
       card: {
@@ -49,7 +56,8 @@ export const copy: SiteCopy = {
       },
     },
     {
-      label: "02 Steer",
+      stageNote: "mid-run, before it costs you",
+      name: "Steer",
       headline: "Intervene mid-run.",
       body: "Pause a live agent, edit its context, and resume without losing state. Bad paths end in seconds, not after the invoice.",
       card: {
@@ -63,7 +71,8 @@ export const copy: SiteCopy = {
       },
     },
     {
-      label: "03 Replay",
+      stageNote: "long after it ran",
+      name: "Replay",
       headline: "Prove what happened.",
       body: "Reproduce any historical run bit for bit with inputs pinned, then export the evidence. When someone asks why the agent did that, you answer with a link.",
       card: {

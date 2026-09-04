@@ -23,29 +23,41 @@ export function formatStat(value: number, suffix: string): string {
 }
 
 /**
- * Rises the characters of a headline out from behind their line mask.
+ * Splits a headline and parks its characters below their line mask.
+ *
+ * Preparing and playing are two separate steps on purpose. gsap.from() applies its
+ * start values the moment the tween is created, so building the tween inside the
+ * scroll trigger meant the text rendered normally, snapped to hidden as you reached
+ * it, then animated back in. Reading as a flicker. Everything is hidden here, well
+ * before the section is anywhere near the viewport, and the trigger only plays it.
  *
  * Split by line first, then by character, so each line gets its own mask and the
  * stagger reads left to right within a line rather than diagonally across the block.
- * SplitText's `mask` option builds the overflow wrapper for us.
  */
-export function revealHeadline(el: HTMLElement, delay = 0): gsap.core.Timeline {
+export function prepareHeadline(el: HTMLElement): Element[] {
   const split = new SplitText(el, { type: "lines,chars", mask: "lines" });
-  const tl = gsap.timeline({ delay });
-  tl.from(split.chars, {
-    yPercent: 118,
+  gsap.set(split.chars, { yPercent: 118 });
+  return split.chars;
+}
+
+export function playHeadline(chars: Element[], delay = 0): gsap.core.Timeline {
+  return gsap.timeline({ delay }).to(chars, {
+    yPercent: 0,
     duration: 1.1,
     ease: "power4.out",
     stagger: 0.016,
   });
-  return tl;
 }
 
 /** Prose and controls follow their headline up, quieter and slower. */
-export function revealSupporting(els: Element[], delay = 0): gsap.core.Timeline {
-  return gsap.timeline({ delay }).from(els, {
-    y: 18,
-    autoAlpha: 0,
+export function prepareSupporting(els: Element[]): void {
+  gsap.set(els, { y: 18, autoAlpha: 0 });
+}
+
+export function playSupporting(els: Element[], delay = 0): gsap.core.Timeline {
+  return gsap.timeline({ delay }).to(els, {
+    y: 0,
+    autoAlpha: 1,
     duration: 0.9,
     ease: "power3.out",
     stagger: 0.09,

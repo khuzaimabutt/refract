@@ -1,4 +1,8 @@
+"use client";
+
 import { copy } from "@/content/copy";
+import { Reveal } from "./Reveal";
+import { useEntered } from "./entered";
 
 /**
  * The headline sits on the optical centre line rather than at the foot of the screen,
@@ -10,6 +14,8 @@ import { copy } from "@/content/copy";
  * so they stay readable while the headline is the thing being distorted.
  */
 export function Hero() {
+  const entered = useEntered();
+
   return (
     <section className="hero" data-section="hero">
       <div className="hero__mark machine">{copy.brand}</div>
@@ -29,12 +35,16 @@ export function Hero() {
       </p>
 
       <div className="hero__foot">
-        <div className="hero__aside">
-          <p className="hero__sub measure">{copy.hero.sub}</p>
-          <a className="cta" href="#closing">
-            {copy.hero.cta}
-          </a>
-        </div>
+        <Reveal when="now" active={entered}>
+          <div className="hero__aside">
+            <p className="hero__sub measure" data-reveal="supporting">
+              {copy.hero.sub}
+            </p>
+            <a className="cta" data-reveal="supporting" href="#closing">
+              {copy.hero.cta}
+            </a>
+          </div>
+        </Reveal>
         <p className="hero__cue" aria-hidden>
           scroll
         </p>

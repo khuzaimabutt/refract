@@ -3,6 +3,7 @@
 import { useCallback, useState, type ReactNode } from "react";
 import { MotionRoot } from "./MotionRoot";
 import { Preloader } from "./Preloader";
+import { EnteredContext } from "./entered";
 
 /**
  * Holds the one piece of state the whole page shares: whether the load sequence has
@@ -16,7 +17,7 @@ export function Shell({ children }: { children: ReactNode }) {
   return (
     <MotionRoot>
       <Preloader onDone={onDone} />
-      <div data-entered={entered ? "true" : "false"}>{children}</div>
+      <EnteredContext.Provider value={entered}>{children}</EnteredContext.Provider>
     </MotionRoot>
   );
 }

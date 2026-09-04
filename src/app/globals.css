@@ -326,3 +326,47 @@ a { color: inherit; }
 
 .preloader__mark { color: var(--ink-dim); letter-spacing: 0.2em; }
 .preloader__pct { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* --- 3D stage and its still fallback ------------------------------ */
+
+/* The poster stands in for the canvas when motion is off or WebGL is missing.
+   Same object, same place, so the composition never changes shape. */
+.scene-poster {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Visible to assistive technology and to search, not to the eye. Used for the
+   hero headline, whose visible form is rendered in WebGL. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* When the scene cannot run, the words have to come back to the document, or a
+   visitor with reduced motion or no WebGL gets a hero with no headline at all. */
+[data-scene="poster"] .hero__headline-fallback {
+  display: block;
+  align-self: center;
+  justify-self: start;
+  font-family: var(--font-display), sans-serif;
+  font-size: var(--step-hero);
+  font-weight: 600;
+  letter-spacing: -0.028em;
+  line-height: 0.9;
+  max-width: 16ch;
+}
+
+.hero__headline-fallback { display: none; }

@@ -14,14 +14,19 @@ export function Hero() {
     <section className="hero" data-section="hero">
       <div className="hero__mark machine">{copy.brand}</div>
 
-      <h1 className="hero__headline">
-        <span className="line-mask">
-          <span className="line">See through</span>
-        </span>
-        <span className="line-mask">
-          <span className="line">your agents.</span>
-        </span>
-      </h1>
+      {/* The visible headline is rendered inside the 3D scene so the glass can
+          actually refract it. This copy stays for search engines, screen readers
+          and anyone selecting text, and is hidden from sight rather than from
+          assistive technology. */}
+      <h1 className="sr-only">{copy.hero.headline}</h1>
+
+      {/* Shown only when the scene is not running, so the hero still has a visible
+          headline for reduced-motion visitors and browsers without WebGL. */}
+      <p className="hero__headline-fallback" aria-hidden>
+        See through
+        <br />
+        your agents.
+      </p>
 
       <div className="hero__foot">
         <div className="hero__aside">

@@ -309,3 +309,20 @@ a { color: inherit; }
 .footer__links { display: flex; gap: 1.5rem; }
 .footer__links a { text-decoration: none; border-bottom: 1px solid var(--hairline); padding-bottom: 2px; }
 .footer__links a:hover { border-bottom-color: var(--ink-dim); }
+
+/* --- preloader ---------------------------------------------------- */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: var(--ground);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: var(--gutter);
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+.preloader__mark { color: var(--ink-dim); letter-spacing: 0.2em; }
+.preloader__pct { color: var(--ink); font-variant-numeric: tabular-nums; }

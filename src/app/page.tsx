@@ -1,4 +1,5 @@
 import { Grain } from "@/components/Grain";
+import { Shell } from "@/components/Shell";
 import { Hero } from "@/components/Hero";
 import { Beat } from "@/components/beats/Beat";
 import { ProofStrip } from "@/components/ProofStrip";
@@ -8,7 +9,7 @@ import { copy } from "@/content/copy";
 
 export default function Home() {
   return (
-    <>
+    <Shell>
       <Grain />
       <main className="page">
         <Hero />
@@ -19,6 +20,6 @@ export default function Home() {
         <Closing />
         <Footer />
       </main>
-    </>
+    </Shell>
   );
 }

@@ -1,9 +1,10 @@
 import { Grain } from "@/components/Grain";
 import { Shell } from "@/components/Shell";
 import { Disperse } from "@/components/Disperse";
+import { Scramble } from "@/components/Scramble";
 import { SceneRoot } from "@/components/scene/SceneRoot";
 import { Hero } from "@/components/Hero";
-import { Beat } from "@/components/beats/Beat";
+import { PinnedBeats } from "@/components/beats/PinnedBeats";
 import { ProofStrip } from "@/components/ProofStrip";
 import { Closing } from "@/components/Closing";
 import { Footer } from "@/components/Footer";
@@ -15,15 +16,15 @@ export default function Home() {
       <SceneRoot />
       <Grain />
       <Disperse>
+      <Scramble>
       <main className="page">
         <Hero />
-        {copy.beats.map((beat, i) => (
-          <Beat key={beat.name} beat={beat} side={i % 2 === 0 ? "left" : "right"} />
-        ))}
+        <PinnedBeats beats={copy.beats} />
         <ProofStrip />
         <Closing />
         <Footer />
       </main>
+      </Scramble>
       </Disperse>
     </Shell>
   );

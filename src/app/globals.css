@@ -484,3 +484,46 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .cursor-lens { display: none; }
 }
+
+/* --- pinned capability sequence ------------------------------------
+   The one place the page stops moving past you and performs in place.
+   The outer element supplies the scroll distance; the stage inside it is
+   what gets pinned, so the panels can swap without the page jumping.
+   ------------------------------------------------------------------ */
+
+.pinned { position: relative; }
+
+.pinned__stage {
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: clamp(4rem, 10vh, 7rem) var(--gutter);
+}
+
+/* Panels stack on one another. Only the active one is visible, and they share a
+   cell so swapping never changes the height of anything. */
+.pinned__panel {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .pinned__panel { grid-template-columns: 1fr 1fr; }
+  .pinned__card { justify-self: end; }
+}
+
+.pinned__text { display: grid; gap: clamp(1rem, 2vw, 1.5rem); justify-items: start; }
+
+/* Without JavaScript, or with motion reduced, the panels never get their
+   positioning from the timeline. Stacking them would hide two of the three, so the
+   sequence falls back to three ordinary blocks in a column. */
+@media (prefers-reduced-motion: reduce) {
+  .pinned__stage { display: block; }
+  .pinned__panel {
+    min-height: auto;
+    padding-block: clamp(3rem, 10vh, 6rem);
+  }
+}

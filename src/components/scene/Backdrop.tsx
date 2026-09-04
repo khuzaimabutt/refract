@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { CanvasTexture, SRGBColorSpace } from "three";
+import { useFrame } from "@react-three/fiber";
+import type { Group, Mesh } from "three";
 
 /**
  * A very dark gradient wall behind everything in the scene.
@@ -15,7 +17,36 @@ import { CanvasTexture, SRGBColorSpace } from "three";
  * It is drawn once into a canvas rather than shipped as an image, so it costs no request
  * and stays perfectly smooth at any size.
  */
-export function Backdrop({ width, height }: { width: number; height: number }) {
+export function Backdrop({
+  width,
+  height,
+  follow,
+}: {
+  width: number;
+  height: number;
+  /** The object the pool of light should stay behind. */
+  follow?: React.RefObject<Group | null>;
+}) {
+  const mesh = useRef<Mesh>(null);
+
+  /**
+   * The light travels with the crystal.
+   *
+   * The pool is deliberately tight, so a fixed one lit only the centre of the frame.
+   * As soon as the crystal moved aside for a section of text it left the light behind,
+   * and glass with nothing bright behind it goes dark: the same failure that made the
+   * first version read as black plastic, arriving later by a different route. Following
+   * at a fraction of the object's travel keeps the crystal lit without the background
+   * visibly sliding around behind the type.
+   */
+  useFrame(() => {
+    const m = mesh.current;
+    const target = follow?.current;
+    if (!m || !target) return;
+    m.position.x += (target.position.x * 0.75 - m.position.x) * 0.06;
+    m.position.y += (target.position.y * 0.75 - m.position.y) * 0.06;
+  });
+
   const texture = useMemo(() => {
     const c = document.createElement("canvas");
     c.width = 64;
@@ -41,7 +72,7 @@ export function Backdrop({ width, height }: { width: number; height: number }) {
   }, []);
 
   return (
-    <mesh position={[0, 0, -6]}>
+    <mesh ref={mesh} position={[0, 0, -6]}>
       <planeGeometry args={[width, height]} />
       <meshBasicMaterial map={texture} toneMapped={false} />
     </mesh>

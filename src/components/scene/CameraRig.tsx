@@ -19,10 +19,16 @@ import { scrollProgress } from "./scroll-progress";
  */
 const KEYS: [number, number, number, number, number, number][] = [
   [0.0, 8.0, 0.0, 0.55, 0.1, 0.78],
-  [0.2, 7.0, 0.1, 1.7, 0.0, 0.72],
-  [0.44, 6.3, 0.15, -1.7, 0.0, 0.68],
-  [0.66, 5.8, 0.1, 1.6, 0.0, 0.62],
-  [0.84, 6.6, 0.0, 0.0, 0.0, 0.4],
+  // Entering the pinned sequence. The crystal settles to the right, behind the plate,
+  // and stays there: the panels swap in place beneath it, so an object wandering
+  // left and right would fight a stage that is deliberately holding still.
+  [0.14, 7.2, 0.05, 1.5, 0.0, 0.72],
+  // The middle of the sequence, where the facets come apart. The camera moves in
+  // rather than the object growing, so the break fills the frame without the crystal
+  // straying over the text beside it.
+  [0.45, 6.2, 0.0, 1.5, 0.0, 0.8],
+  [0.76, 7.0, 0.05, 1.5, 0.0, 0.7],
+  [0.85, 6.6, 0.0, 0.0, 0.0, 0.42],
   // The closing headline is centred, so the crystal returns to the middle behind it.
   [0.93, 7.6, 0.0, 0.0, 0.0, 0.85],
   // The footer is left-aligned and signed with a name set large. The crystal moves

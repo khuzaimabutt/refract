@@ -37,7 +37,7 @@ export function Footer() {
 
       <ul className="colophon">
         {footer.colophon.map((line) => (
-          <li key={line}>{line}</li>
+          <li key={line} data-scramble>{line}</li>
         ))}
       </ul>
     </footer>

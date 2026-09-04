@@ -39,7 +39,7 @@ export function SceneContents({
 
       {/* Generously oversized: the camera pulls back to z=8 and pans, and any edge of
           this plane appearing in frame would read as a seam in the dark. */}
-      <Backdrop width={viewport.width * 3} height={viewport.height * 3} />
+      <Backdrop width={viewport.width * 3} height={viewport.height * 3} follow={objectRef} />
       <HeroType />
       <GlassObject groupRef={objectRef} quality={quality} />
       <CameraRig objectRef={objectRef} />

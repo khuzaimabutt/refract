@@ -53,23 +53,21 @@ export function GlassObject({
   return (
     <group ref={groupRef}>
       <group ref={spin}>
-        <mesh ref={mesh} scale={[1.22, 1.22, 1.05]}>
+        <mesh ref={mesh} scale={1.24}>
           {/* A faceted crystal rather than a torus knot. The knot was the first
               attempt and it failed for a reason worth recording: it is a thick,
               closed form, so it absorbed almost all the light passing through and
               rendered as black plastic, and at any size large enough to read as
               glass it buried the headline it was supposed to bend.
 
-              An icosahedron gives flat faces, each refracting the type behind it at
-              its own angle, which is what produces the split, lens-like reading.
-              Detail 1 rather than 0: twenty faces read as an angular shard with a
-              broad flat top, and the silhouette wanted to be round, closer to a
-              lens or a droplet than a cut rock. Eighty faces keep the faceting
-              while the outline reads as a circle.
+              Twenty faces, deliberately. Subdividing further rounds the silhouette
+              into an orb and the flat planes stop reading as cut facets, which is
+              the whole character of the object. Sharp edges are the point.
 
-              Scaled almost evenly, with only a slight flattening on z. The heavy
-              flattening of the first pass is what made it read as a plate. */}
-          <icosahedronGeometry args={[1, 1]} />
+              Scaled evenly, so the crystal fills a spherical volume rather than a
+              flattened, disc-like one. The shape stays angular; only the space it
+              occupies is even in all three axes. */}
+          <icosahedronGeometry args={[1, 0]} />
           <MeshTransmissionMaterial
             transmission={1}
             thickness={0.75}

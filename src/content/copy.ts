@@ -109,7 +109,7 @@ export const copy: SiteCopy = {
     disclosure: "Refract is a fictional product.",
     turn: "The engineering is not.",
     name: "Khuzaima Atiq",
-    role: "Creative developer. Available for studio and agency work.",
+    role: "Creative developer. Open to studio, agency and direct work.",
     contactHref: "mailto:ikrma434@gmail.com",
     contactLabel: "ikrma434@gmail.com",
     githubHref: "https://github.com/khuzaimabutt",

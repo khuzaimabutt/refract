@@ -7,6 +7,9 @@ import { prefersReducedMotion } from "@/lib/motion";
 const R = 17;
 const CIRCUMFERENCE = 2 * Math.PI * R;
 
+/** How far the ring opens over something clickable. A tenth is a hint, not an event. */
+const HOVER_SCALE = 1.1;
+
 /**
  * A ring that trails the pointer, with an arc showing how far down the page you are.
  *
@@ -24,6 +27,10 @@ const CIRCUMFERENCE = 2 * Math.PI * R;
  * The native cursor is deliberately left alone. Hiding it is the fashion, but it costs
  * a visitor the one thing they rely on to know where they are pointing, and on a page
  * this dark that is a poor trade.
+ *
+ * Over something clickable the ring opens slightly. Slightly is the point: a large jump
+ * turns a quiet accent into the loudest thing on screen, and the ring competes with the
+ * crystal it sits in front of.
  *
  * Only runs for a fine pointer, so phones never pay for it, and not at all under
  * reduced motion.
@@ -46,14 +53,24 @@ export function CursorLens() {
     let targetScale = 1;
     let visible = 0;
     let targetVisible = 0;
+    let lastScrollY = -1;
     let raf = 0;
+
+    /**
+     * What sits under a given point right now.
+     *
+     * Asked of the document rather than taken from an event target, because the answer
+     * has to be recomputed when the page moves under a stationary cursor as well as
+     * when the cursor moves over a still page.
+     */
+    const interactiveAt = (x: number, y: number) =>
+      Boolean(document.elementFromPoint(x, y)?.closest("a, button, [role='button']"));
 
     const onMove = (e: PointerEvent) => {
       pointer.x = e.clientX;
       pointer.y = e.clientY;
       targetVisible = 1;
-      const over = (e.target as Element | null)?.closest?.("a, button, [role='button']");
-      targetScale = over ? 1.9 : 1;
+      targetScale = interactiveAt(e.clientX, e.clientY) ? HOVER_SCALE : 1;
     };
     const onLeave = () => {
       targetVisible = 0;
@@ -73,8 +90,20 @@ export function CursorLens() {
       // the viewport has nothing to scroll, and dividing by zero would leave the dial
       // stuck at NaN and blank.
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+      const y = window.scrollY;
+      const progress = scrollable > 0 ? Math.min(1, Math.max(0, y / scrollable)) : 0;
       arc.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - progress));
+
+      // Scrolling moves the page under the cursor without firing a pointer event, so
+      // a link scrolled out from beneath a stationary hand would otherwise leave the
+      // ring stuck open. Only recomputed when the page has actually moved, since
+      // hit-testing every frame is not free.
+      if (y !== lastScrollY) {
+        lastScrollY = y;
+        if (pointer.x > -100) {
+          targetScale = interactiveAt(pointer.x, pointer.y) ? HOVER_SCALE : 1;
+        }
+      }
 
       raf = requestAnimationFrame(tick);
     };
